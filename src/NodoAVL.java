@@ -17,7 +17,7 @@ public class NodoAVL {
     /**
      * Factor de equilibrio del nodo.
      */
-    private int factorE;
+    public int factorE;
 
     /**
      * constructor por defecto.
@@ -101,7 +101,9 @@ public class NodoAVL {
             altIzq = this.getIzquierda().getAltura();
         }
         return (altDer - altIzq);
+
     }
+
 
     /**
      * Asigna un valor al factor de equilibrio.

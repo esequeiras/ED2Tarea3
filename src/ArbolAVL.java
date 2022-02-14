@@ -4,26 +4,103 @@ public class ArbolAVL {
     public ArbolAVL(){
         this.raiz=null;
     }
+    public int obtenerFE(NodoAVL nodo){
+        if (nodo!=null){
+            return -1;
+        }else{
+            return nodo.factorE;
+        }
 
-    public NodoAVL insertar(NodoAVL nuevo, NodoAVL subArbol){
+    }
+    private NodoAVL insertarAVL(NodoAVL nuevo, NodoAVL subArbol){
         NodoAVL nuevoPadre=subArbol;
         if (nuevo.getDato()<subArbol.getDato()) {
             if (subArbol.getIzquierda() == null) {
                 subArbol.setIzquierda(nuevo);
             } else {
-                subArbol.setIzquierda(insertar(nuevo, subArbol.getIzquierda()));
+                subArbol.setIzquierda(insertarAVL(nuevo, subArbol.getIzquierda()));
                 //si esta desbalanceado
-                if ((subArbol.getIzquierda().getFactorE() - subArbol.getDerecha().getFactorE()) == 2) {
+                if ((obtenerFE(subArbol.getIzquierda()) - obtenerFE(subArbol.getDerecha())) == 2) {
                     if (nuevo.getDato() < subArbol.getIzquierda().getDato()) {
-                        nuevoPadre = rotacionDobleIzquierda(subArbol);
+                        nuevoPadre = rotacionIzquierda(subArbol);
+                    }else{
+                        nuevoPadre=rotacionDobleIzquierda(subArbol);
+                    }
+                }
+            }
+
+        }else if(nuevo.getDato()>subArbol.getDato()){
+            if (subArbol.getDerecha() == null) {
+                subArbol.setDerecha(nuevo);
+            }else{
+                subArbol.setIzquierda(insertarAVL(nuevo,subArbol.getDerecha()));
+                if ((obtenerFE(subArbol.getDerecha()) - obtenerFE(subArbol.getIzquierda())) == 2){
+                    if (nuevo.getDato() > subArbol.getDerecha().getDato()) {
+                        nuevoPadre = rotacionderecha(subArbol);
                     }else{
                         nuevoPadre=rotacionDobleDerecha(subArbol);
                     }
                 }
-            }//minuto 6   https://www.youtube.com/watch?v=HFp7zBVgrKA
+            }
 
         }
+        //actualizar el FE
+        if ((subArbol.getIzquierda()==null) && (subArbol.getDerecha()!=null)){
+            subArbol.setFactorE(obtenerFE(subArbol.getDerecha())+1);
+        }else if((subArbol.getDerecha()==null)&& (subArbol.getIzquierda()!=null)){
+            subArbol.setFactorE(obtenerFE(subArbol.getIzquierda())+1);
+        }else{
+            subArbol.setFactorE(Math.max(obtenerFE(subArbol.getIzquierda()),obtenerFE(subArbol.getDerecha()))+1);
+        }
+        return nuevoPadre;
     }
+    public void insertar(int dato){
+        NodoAVL nuevo= new NodoAVL(dato);
+        if (this.raiz==null){
+            this.raiz=nuevo;
+        }else{
+            this.raiz=insertarAVL(nuevo,raiz);
+        }
+    }
+
+    private void preorden(NodoAVL n) {
+        if (n != null) {
+            imprimirDato(n);
+            preorden(n.getIzquierda());
+            preorden(n.getDerecha());
+        }
+    }
+
+    private void inorden(NodoAVL n) {
+        if (n != null) {
+            inorden(n.getIzquierda());
+            imprimirDato(n);
+            inorden(n.getDerecha());
+        }
+    }
+
+    private void postorden(NodoAVL n) {
+        if (n != null) {
+            postorden(n.getIzquierda());
+            postorden(n.getDerecha());
+            imprimirDato(n);
+        }
+    }
+    public void imprimirDato(NodoAVL n) {
+        System.out.print(n.getDato()+", ");
+    }
+    public void preorden() {
+        this.preorden(this.raiz);
+    }
+
+    public void inorden() {
+        this.inorden(this.raiz);
+    }
+
+    public void postorden() {
+        this.postorden(this.raiz);
+    }
+
     /**
      *
      * @param nodo
@@ -33,16 +110,16 @@ public class ArbolAVL {
        NodoAVL aux=nodo.getIzquierda();
       nodo.setIzquierda(aux.getDerecha());
       aux.setDerecha(nodo);
-       nodo.setFactorE(Math.max(nodo.getIzquierda().getFactorE(),nodo.getDerecha().getFactorE())+1);
-       aux.setFactorE(Math.max(aux.getIzquierda().getFactorE(),aux.getDerecha().getFactorE())+1);
+       nodo.setFactorE(Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1);
+       aux.setFactorE(Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1);
        return aux;
     }
     public NodoAVL rotacionderecha(NodoAVL nodo){
         NodoAVL aux=nodo.getDerecha();
         nodo.setDerecha(aux.getIzquierda());
         aux.setIzquierda(nodo);
-        nodo.setFactorE(Math.max(nodo.getIzquierda().getFactorE(),nodo.getDerecha().getFactorE())+1);
-        aux.setFactorE(Math.max(aux.getIzquierda().getFactorE(),aux.getDerecha().getFactorE())+1);
+        nodo.setFactorE(Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1);
+        aux.setFactorE(Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1);
         return aux;
     }
     public NodoAVL rotacionDobleDerecha(NodoAVL nodo){

@@ -3,9 +3,20 @@ import java.io.*;
 public class Main {
     static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     static PrintStream out = System.out;
-    static Gestor gestor=new Gestor();
+    //static Gestor gestor=new Gestor();
     public static void main(String[] args) throws IOException {
         int op=0;
+        ArbolAVL arbol=new ArbolAVL();
+        arbol.insertar(3);
+        arbol.insertar(2);
+        arbol.insertar(1);
+        out.println("Recorriendo intorden...");
+        arbol.inorden();
+        out.println("Recorriendo preorden...");
+        arbol.preorden();
+        out.println("Recorriendo postorden...");
+        arbol.postorden();
+
 
         do{
             mostarMenu();
@@ -13,19 +24,19 @@ public class Main {
             switch (op){
                 case 1:
                     out.print("Ingrese un número: ");
-                    gestor.insertar(Integer.parseInt(in.readLine()));
+                    //gestor.insertar(Integer.parseInt(in.readLine()));
                     break;
                 case 2:
                     out.println("Recorriendo preorden...");
-                    gestor.preorden();
+                    //gestor.preorden();
                     break;
                 case 3:
                     out.println("Recorriendo inorden...");
-                    gestor.inorden();
+                    //gestor.inorden();
                     break;
                 case 4:
                     out.println("Recorriendo postorden...");
-                    gestor.postorden();
+                   // gestor.postorden();
                     break;
                 default:
                     out.println("Opcion invalida intente de nuevo");
