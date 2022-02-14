@@ -5,7 +5,7 @@ public class ArbolAVL {
         this.raiz=null;
     }
     public int obtenerFE(NodoAVL nodo){
-        if (nodo!=null){
+        if (nodo==null){
             return -1;
         }else{
             return nodo.factorE;

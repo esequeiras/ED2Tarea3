@@ -35,9 +35,9 @@ public class NodoAVL {
      */
     public NodoAVL(int dato){
         this.dato = dato;
-        izquierda = null;
-        derecha = null;
-        factorE = 0;
+        this.izquierda = null;
+        this.derecha = null;
+        this.factorE = 0;
     }
 
     /**
