@@ -98,31 +98,5 @@ public class NodoAVL {
         this.factorE = fe;
     }
 
-    /**
-     * Devuelve la altura del nodo.
-     * @return altura del nodo.
-     */
-    public int getAltura(){
-        int hIzq = 0;
-        int hDer = 0;
-
-        if(this.getDato()==0){
-            return 0;
-        }
-
-
-        if(this.getIzquierda()!=null){
-            hIzq = this.getIzquierda().getAltura();
-        }else{
-            hIzq = 0;
-        }
-
-        if(this.getDerecha()!=null){
-            hDer = this.getDerecha().getAltura();
-        }else{
-            hDer = 0;
-        }
-        return Math.max(hIzq, hDer) + 1;
-    }
 }
 
