@@ -1,3 +1,5 @@
+package bl;
+
 public class ArbolAVL {
     private NodoAVL raiz;
 
@@ -19,12 +21,13 @@ public class ArbolAVL {
                 subArbol.setIzquierda(nuevo);
             } else {
                 subArbol.setIzquierda(insertarAVL(nuevo, subArbol.getIzquierda()));
-                //si esta desbalanceado
-                if ((obtenerFE(subArbol.getIzquierda()) - obtenerFE(subArbol.getDerecha())) == 2) {
+
+                int fe=(obtenerFE(subArbol.getIzquierda()) - obtenerFE(subArbol.getDerecha()));
+                if (fe == 2) {
                     if (nuevo.getDato() < subArbol.getIzquierda().getDato()) {
                         nuevoPadre = rotacionIzquierda(subArbol);
                     }else{
-                        nuevoPadre=rotacionDobleIzquierda(subArbol);
+                        nuevoPadre=rotacionDobleDerecha(subArbol);
                     }
                 }
             }
@@ -33,12 +36,12 @@ public class ArbolAVL {
             if (subArbol.getDerecha() == null) {
                 subArbol.setDerecha(nuevo);
             }else{
-                subArbol.setIzquierda(insertarAVL(nuevo,subArbol.getDerecha()));
+                subArbol.setDerecha(insertarAVL(nuevo,subArbol.getDerecha()));
                 if ((obtenerFE(subArbol.getDerecha()) - obtenerFE(subArbol.getIzquierda())) == 2){
                     if (nuevo.getDato() > subArbol.getDerecha().getDato()) {
                         nuevoPadre = rotacionderecha(subArbol);
                     }else{
-                        nuevoPadre=rotacionDobleDerecha(subArbol);
+                        nuevoPadre=rotacionDobleIzquierda(subArbol);
                     }
                 }
             }
@@ -46,11 +49,12 @@ public class ArbolAVL {
         }
         //actualizar el FE
         if ((subArbol.getIzquierda()==null) && (subArbol.getDerecha()!=null)){
-            subArbol.setFactorE(obtenerFE(subArbol.getDerecha())+1);
+            subArbol.setFactorE(subArbol.getDerecha().factorE+1);
         }else if((subArbol.getDerecha()==null)&& (subArbol.getIzquierda()!=null)){
-            subArbol.setFactorE(obtenerFE(subArbol.getIzquierda())+1);
+            subArbol.setFactorE(subArbol.getIzquierda().factorE+1);
+
         }else{
-            subArbol.setFactorE(Math.max(obtenerFE(subArbol.getIzquierda()),obtenerFE(subArbol.getDerecha()))+1);
+            subArbol.factorE=Math.max(obtenerFE(subArbol.getIzquierda()),obtenerFE(subArbol.getDerecha()))+1;
         }
         return nuevoPadre;
     }
@@ -110,16 +114,17 @@ public class ArbolAVL {
        NodoAVL aux=nodo.getIzquierda();
       nodo.setIzquierda(aux.getDerecha());
       aux.setDerecha(nodo);
-       nodo.setFactorE(Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1);
-       aux.setFactorE(Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1);
+      nodo.factorE=Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1;
+      aux.factorE=Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1;
+
        return aux;
     }
     public NodoAVL rotacionderecha(NodoAVL nodo){
         NodoAVL aux=nodo.getDerecha();
         nodo.setDerecha(aux.getIzquierda());
         aux.setIzquierda(nodo);
-        nodo.setFactorE(Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1);
-        aux.setFactorE(Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1);
+        nodo.factorE=Math.max(obtenerFE(nodo.getIzquierda()),obtenerFE(nodo.getDerecha()))+1;
+        aux.factorE=Math.max(obtenerFE(aux.getIzquierda()),obtenerFE(aux.getDerecha()))+1;
         return aux;
     }
     public NodoAVL rotacionDobleDerecha(NodoAVL nodo){
@@ -130,7 +135,7 @@ public class ArbolAVL {
     }
     public NodoAVL rotacionDobleIzquierda(NodoAVL nodo){
         NodoAVL aux;
-        nodo.setDerecha(rotacionIzquierda(nodo.getIzquierda()));
+        nodo.setDerecha(rotacionIzquierda(nodo.getDerecha()));
         aux=rotacionderecha(nodo);
         return aux;
     }
