@@ -89,23 +89,6 @@ public class NodoAVL {
         this.dato = dato;
     }
 
-    /**
-     * Obtiene el factor de equilibrio del nodo.
-     * @return factor de equilibrio del nodo.
-     */
-    public int getFactorE(){
-        int altDer = 0;
-        int altIzq = 0;
-        if(this.getDerecha()!=null){
-            altDer = this.getDerecha().getAltura();
-        }
-        if(this.getIzquierda()!=null){
-            altIzq = this.getIzquierda().getAltura();
-        }
-        return (altDer - altIzq);
-
-    }
-
 
     /**
      * Asigna un valor al factor de equilibrio.
